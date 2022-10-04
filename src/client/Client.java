@@ -5,13 +5,6 @@
  */
 package client;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
@@ -19,9 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-
 /**
- *
  * @author TTC
  */
 public class Client {
@@ -34,20 +25,20 @@ public class Client {
     private void LoadData() throws FileNotFoundException, IOException {
         String currentPath = new java.io.File(".").getCanonicalPath();
         System.out.println(currentPath);
-        String url = currentPath+"\\src\\client\\data.txt";
+        String url = currentPath + "\\src\\client\\data.txt";
         // Đọc dữ liệu từ File với Scanner
         FileInputStream fileInputStream = new FileInputStream(url);
         Scanner scanner = new Scanner(fileInputStream);
 
         try {
             while (scanner.hasNextLine()) {
-                String data=scanner.nextLine();
-                String  res[]=data.split("-");
+                String data = scanner.nextLine();
+                String res[] = data.split("-");
 //                res[0] server ip
-                Client.serverIP=res[0].split(":")[1];
+                Client.serverIP = res[0].split(":")[1];
 //                res[1] port
-                Client.port=Integer.parseInt(res[1].split(":")[1]);
-                
+                Client.port = Integer.parseInt(res[1].split(":")[1]);
+
             }
         } finally {
             try {
