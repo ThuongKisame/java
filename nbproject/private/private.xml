@@ -5,9 +5,8 @@
         <group>
             <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/server/Server.java</file>
             <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/server/ServerListener.java</file>
-            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/Client.java</file>
             <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/server/ClientThread.java</file>
-            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/ClientController.java</file>
+            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/server/DAL/Connect.java</file>
             <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/ClientListener.java</file>
             <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/server/ServerController.java</file>
             <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/data.txt</file>
