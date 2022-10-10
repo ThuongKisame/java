@@ -10,9 +10,11 @@ import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.security.PublicKey;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +28,8 @@ public class Client {
     public static String serverIP;
     public static BufferedReader in;
     public static BufferedWriter out;
+    public static PublicKey publicKey;
+    public static String secretKey = null;
 
     private void LoadData() throws FileNotFoundException, IOException {
         String currentPath = new java.io.File(".").getCanonicalPath();
@@ -41,7 +45,7 @@ public class Client {
             while (scanner.hasNextLine()) {
                 String data = scanner.nextLine();
                 String res[] = data.split("-");
-                String serverIP=res[0].split(":")[1];
+                String serverIP = res[0].split(":")[1];
                 Client.serverIP = res[0].split(":")[1];
                 Client.port = Integer.parseInt(res[1].split(":")[1]);
             }
@@ -63,11 +67,16 @@ public class Client {
             System.out.println(Client.serverIP);
             Socket server = new Socket(Client.serverIP, Client.port);
             System.out.println("success!");
+            
             Scanner sc = new Scanner(System.in);
             //listener server message
+            
+            Client.in = new BufferedReader(new InputStreamReader(server.getInputStream()));
+            Client.out = new BufferedWriter(new OutputStreamWriter(server.getOutputStream()));
+            
             ClientListener clientlistener = new ClientListener(server);
             clientlistener.start();
-            Client.out = new BufferedWriter(new OutputStreamWriter(server.getOutputStream()));
+            
             while (true) {
                 String sms = sc.nextLine();
                 Client.out.write(sms);

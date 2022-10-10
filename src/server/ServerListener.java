@@ -10,8 +10,14 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import server.DTO.User;
 
 /**
  *
@@ -19,24 +25,32 @@ import java.util.logging.Logger;
  */
 public class ServerListener extends Thread {
 
-    private Socket client;
-    private BufferedReader in;
-    private BufferedWriter out;
+    private User user;
 
 
-    public ServerListener(Socket client) {
-        this.client = client;
+    public ServerListener(User user) {
+        this.user = user;
     }
     
     @Override
     public void run() {
         try {
-            this.in=new BufferedReader(new InputStreamReader(client.getInputStream()));
+            ServerController ctrl=new ServerController(this.user);
             while(true){
-                String sms=this.in.readLine();
-                System.out.println(sms);
+                String sms=user.getIn().readLine();
+                ctrl.run(sms);
             }
         } catch (IOException ex) {
+            Logger.getLogger(ServerListener.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(ServerListener.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(ServerListener.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(ServerListener.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(ServerListener.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
             Logger.getLogger(ServerListener.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
