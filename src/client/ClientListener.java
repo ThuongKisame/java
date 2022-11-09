@@ -30,11 +30,11 @@ public class ClientListener extends Thread {
     @Override
     public void run() {
         try {
-            ClientController ctrl = new ClientController(server);
+            Client.ctrl = new ClientController(server);
             while (true) {
                 String sms = Client.in.readLine();
                 try {
-                    ctrl.run(sms);
+                    Client.ctrl.run(sms);
                 } catch (InvalidKeySpecException ex) {
                     Logger.getLogger(ClientListener.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (NoSuchPaddingException ex) {

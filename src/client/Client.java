@@ -5,6 +5,7 @@
  */
 package client;
 
+import client.GUI.MainClientFarme;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -30,13 +31,13 @@ public class Client {
     public static BufferedWriter out;
     public static PublicKey publicKey;
     public static String secretKey = null;
+    public static MainClientFarme farme;
+    public static ClientController ctrl;
 
     private void LoadData() throws FileNotFoundException, IOException {
         String currentPath = new java.io.File(".").getCanonicalPath();
         System.out.println(currentPath);
         String url = currentPath + "\\src\\client\\data.txt";
-//          String url=
-        //C:\Users\TTC\Documents\NetBeansProjects\LTM\src\client\data.txt
         // Đọc dữ liệu từ File với Scanner
         FileInputStream fileInputStream = new FileInputStream(url);
         Scanner scanner = new Scanner(fileInputStream);
@@ -66,23 +67,21 @@ public class Client {
         try {
             System.out.println(Client.serverIP);
             Socket server = new Socket(Client.serverIP, Client.port);
-            System.out.println("success!");
+            System.out.println("Connected!");
             
             Scanner sc = new Scanner(System.in);
             //listener server message
-            
             Client.in = new BufferedReader(new InputStreamReader(server.getInputStream()));
             Client.out = new BufferedWriter(new OutputStreamWriter(server.getOutputStream()));
+            
+            //Open gui
+            Client.farme=new MainClientFarme();
+            Client.farme.setVisible(true);
             
             ClientListener clientlistener = new ClientListener(server);
             clientlistener.start();
             
-            while (true) {
-                String sms = sc.nextLine();
-                Client.out.write(sms);
-                Client.out.newLine();
-                Client.out.flush();
-            }
+           
         } catch (IOException ex) {
             System.out.println("Can't connect this server!");
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);

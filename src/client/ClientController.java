@@ -35,6 +35,8 @@ public class ClientController {
     private static final String ALPHA_NUMERIC = alpha + alphaUpperCase + digits;
     private static Random generator = new Random();
 
+    public static final String SEND_SEARCH="2//";
+    
     public static final int LOGIN = 1;
     public static final int UPDATE = 2;
     private Socket server;
@@ -61,10 +63,10 @@ public class ClientController {
         Client.secretKey = randomAlphaNumeric(8);
     }
 
-
     public static void sendMessage(String sms) throws IOException {
-        System.out.println("Send to server:"+sms);
-        Client.out.write(sms);
+        System.out.println("Send to server:" + sms);
+        String value = AES.encrypt(sms, Client.secretKey);
+        Client.out.write(value);
         Client.out.newLine();
         Client.out.flush();
 //        out.close();
@@ -84,7 +86,10 @@ public class ClientController {
 //                System.out.println(pubKey);
             //Mã hóa khóa bí mật bằng publickey của server
             String res = RSA.enCode(Client.secretKey, Client.publicKey);
-            sendMessage(res);
+            //gửi secretKey cho lại server
+            Client.out.write(res);
+            Client.out.newLine();
+            Client.out.flush();
 //            System.out.println(mes)
 //            System.out.println(Client.secretKey);
 
@@ -97,14 +102,13 @@ public class ClientController {
         if (Client.secretKey == null) {
             createKey(sms);
         } else {
-            String response= AES.decrypt(sms, Client.secretKey);
+            String response = AES.decrypt(sms, Client.secretKey);
             System.out.println(response);
 
             String[] res = response.split("//");
             int option = Integer.parseInt(res[0]);
 
 //            sendMessage(AES.encrypt("hi",Client.secretKey));
-
             switch (option) {
 
                 default: {

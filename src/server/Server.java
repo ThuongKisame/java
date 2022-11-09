@@ -81,7 +81,7 @@ public class Server {
         try {
             Server server = new Server();
             Server.server = new ServerSocket(12345);
-            
+            //tạo public key và private key
             RSA.CreateServerKey();
             
 //          writing client conect
