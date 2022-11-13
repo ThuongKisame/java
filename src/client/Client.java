@@ -5,7 +5,13 @@
  */
 package client;
 
+import client.DTO.Country;
+import client.GUI.CityPanel;
+import client.GUI.CountryPanel;
 import client.GUI.MainClientFarme;
+import client.GUI.RoundedPanel;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -19,6 +25,7 @@ import java.security.PublicKey;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPanel;
 
 /**
  * @author TTC
@@ -31,8 +38,17 @@ public class Client {
     public static BufferedWriter out;
     public static PublicKey publicKey;
     public static String secretKey = null;
+    
     public static MainClientFarme farme;
+    public static Dimension dms=new Dimension(1166, 600);
+    public static CityPanel cityPanel;
+    public static CountryPanel countryPanel;
+    
+    
     public static ClientController ctrl;
+    public static boolean STATE_SEARCH_PANEL=false;
+    public static JPanel containerResultSearch  = new RoundedPanel(10, Color.WHITE);
+
 
     private void LoadData() throws FileNotFoundException, IOException {
         String currentPath = new java.io.File(".").getCanonicalPath();

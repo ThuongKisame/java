@@ -8,52 +8,8 @@ package client.GUI;
 import java.awt.*;
 import javax.swing.*;
 
-//    public RoundedPanelExample()
-//    {
-//        setDefaultCloseOperation(EXIT_ON_CLOSE);
-//        setTitle("Rounded Panel Example");
-//        setResizable(true);
-//        setDefaultLookAndFeelDecorated(true);
-//        setSize(500, 500);
-//
-//        Container pane = getContentPane();
-//        pane.setLayout(null);
-//        pane.setBackground(Color.LIGHT_GRAY);
-//
-//        JPanel p1 = new RoundedPanel(10);
-//        p1.setBounds(10,10,100,60);
-//        p1.setOpaque(false);
-//        pane.add(p1);
-//
-//        JPanel p2 = new RoundedPanel(15, Color.RED);
-//        p2.setBounds(150,10,50,50);
-//        p2.setOpaque(false);
-//        pane.add(p2);
-//
-//        JPanel p3 = new RoundedPanel(30);
-//        p3.setBounds(230,10,100,150);
-//        p3.setOpaque(false);
-//        pane.add(p3);
-//
-//        JPanel p4 = new RoundedPanel(20);
-//        p4.setBounds(10,200,100,100);
-//        p4.setBackground(Color.GREEN);
-//        p4.setOpaque(false);
-//        pane.add(p4);
-//
-//        JPanel p5 = new RoundedPanel(200);
-//        p5.setBounds(150,200,200,200);
-//        p5.setBackground(Color.BLUE);
-//        p5.setOpaque(false);
-//        pane.add(p5);
-//    }
-//
-//    public static void main(String[] args) 
-//    {
-//        RoundedPanelExample gui = new RoundedPanelExample();
-//        gui.setVisible(true);
-//    }
-class RoundedPanel extends JPanel {
+
+public class RoundedPanel extends JPanel {
 
     private Color backgroundColor;
     private int cornerRadius = 15;

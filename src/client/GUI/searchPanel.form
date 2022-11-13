@@ -34,6 +34,7 @@
         </Property>
       </Properties>
       <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="handleClickBtnSearch"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSearchActionPerformed"/>
       </Events>
       <AuxValues>
@@ -47,8 +48,9 @@
     </Component>
     <Component class="javax.swing.JTextField" name="searchField">
       <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
-        <Property name="alignmentX" type="float" value="1.0"/>
+        <Property name="alignmentX" type="float" value="5.0"/>
         <Property name="alignmentY" type="float" value="1.0"/>
         <Property name="autoscrolls" type="boolean" value="false"/>
       </Properties>
@@ -61,7 +63,7 @@
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="0" y="0" width="400" height="30"/>
+          <AbsoluteConstraints x="0" y="0" width="360" height="30"/>
         </Constraint>
       </Constraints>
     </Component>

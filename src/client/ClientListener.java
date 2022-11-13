@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -48,7 +49,8 @@ public class ClientListener extends Thread {
                 }
             }
         } catch (IOException ex) {
-            Logger.getLogger(ClientListener.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Server đã đóng !");
+               JOptionPane.showMessageDialog(Client.farme, "Server đã đóng !");
         }
     }
 

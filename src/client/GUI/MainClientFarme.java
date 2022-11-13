@@ -40,17 +40,19 @@ public class MainClientFarme extends javax.swing.JFrame {
         searchPanel searchWrap = new searchPanel();
         searchWrap.setSize(headerWrap.getSize());
         searchWrap.setLayout(null);
-        searchWrap.searchField.setBounds(0,0,headerWrap.getWidth(),headerWrap.getHeight());
+        searchWrap.searchField.setBounds(0,0,headerWrap.getWidth()-40,headerWrap.getHeight());
         searchWrap.btnSearch.setBounds(headerWrap.getWidth()-40,0,40,40);
         
-       
+//        JPanel containerResultSearch=new RoundedPanel(10, Color.WHITE);
+//        containerResultSearch.setBounds(100, 55, this.getWidth() - 200, 40);
+//        containerResultSearch.setLayout(null);
+        
+//        this.container.add(containerResultSearch);
 
         headerWrap.add(searchWrap);
         this.container.add(headerWrap);
         this.repaint();
 
-//        searchWrap.setSize(headerWrap.getWidth(),headerWrap.getHeight());
-//        headerWrap.add(searchWrap);
         this.setDefaultCloseOperation(MainClientFarme.EXIT_ON_CLOSE);
     }
 

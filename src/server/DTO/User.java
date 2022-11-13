@@ -65,6 +65,12 @@ public class User {
     public void setOut(BufferedWriter out) {
         this.out = out;
     }
+    
+    public static void closeUser(User user) throws IOException{
+        user.in.close();
+        user.out.close();
+//        user.client.close();
+    }
 
     @Override
     public String toString() {

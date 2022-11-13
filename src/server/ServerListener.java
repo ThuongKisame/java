@@ -41,7 +41,13 @@ public class ServerListener extends Thread {
                 ctrl.run(sms);
             }
         } catch (IOException ex) {
-            Logger.getLogger(ServerListener.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Người dùng :"+user.toString() +" đã đóng kết nối");
+            try {
+                //handle close connect
+                User.closeUser(user);
+            } catch (IOException ex1) {
+                System.out.println("Đóng kết nối lỗi !");
+            }
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(ServerListener.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchPaddingException ex) {

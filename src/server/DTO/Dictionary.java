@@ -10,33 +10,50 @@ package server.DTO;
  * @author TTC
  */
 public class Dictionary {
-    private String Vietnamese;
-    private String English;
 
-    public Dictionary( String English, String Vietnamese) {
+    private String Vietnamese;
+    private String VietnameseUpperCase;
+    private String English;
+    private  String EnglishUpperCase;
+
+    public Dictionary(String Vietnamese, String VietnameseUpperCase, String English, String EnglishUpperCase) {
         this.Vietnamese = Vietnamese;
+        this.VietnameseUpperCase = VietnameseUpperCase;
         this.English = English;
+        this.EnglishUpperCase = EnglishUpperCase;
     }
 
     public String getVietnamese() {
         return Vietnamese;
     }
 
+    public String getVietnameseUpperCase() {
+        return VietnameseUpperCase;
+    }
+
     public String getEnglish() {
         return English;
+    }
+
+    public String getEnglishUpperCase() {
+        return EnglishUpperCase;
     }
 
     public void setVietnamese(String Vietnamese) {
         this.Vietnamese = Vietnamese;
     }
 
+    public void setVietnameseUpperCase(String VietnameseUpperCase) {
+        this.VietnameseUpperCase = VietnameseUpperCase;
+    }
+
     public void setEnglish(String English) {
         this.English = English;
     }
 
-    @Override
-    public String toString() {
-        return "Dictionary{" + "Vietnamese=" + Vietnamese + ", English=" + English + '}';
+    public void setEnglishUpperCase(String EnglishUpperCase) {
+        this.EnglishUpperCase = EnglishUpperCase;
     }
+
     
 }

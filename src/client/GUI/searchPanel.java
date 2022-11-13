@@ -5,6 +5,7 @@
  */
 package client.GUI;
 
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,6 +41,11 @@ public class searchPanel extends javax.swing.JPanel {
         setLayout(null);
 
         btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/img/icons8_search_16.png"))); // NOI18N
+        btnSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                handleClickBtnSearch(evt);
+            }
+        });
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSearchActionPerformed(evt);
@@ -48,8 +54,9 @@ public class searchPanel extends javax.swing.JPanel {
         add(btnSearch);
         btnSearch.setBounds(360, 0, 40, 30);
 
+        searchField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         searchField.setToolTipText("");
-        searchField.setAlignmentX(1.0F);
+        searchField.setAlignmentX(5.0F);
         searchField.setAlignmentY(1.0F);
         searchField.setAutoscrolls(false);
         searchField.addActionListener(new java.awt.event.ActionListener() {
@@ -63,7 +70,7 @@ public class searchPanel extends javax.swing.JPanel {
             }
         });
         add(searchField);
-        searchField.setBounds(0, 0, 400, 30);
+        searchField.setBounds(0, 0, 360, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -71,20 +78,25 @@ public class searchPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void searchFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            btnSearch.doClick();
+        }
+ 
+    }//GEN-LAST:event_searchFieldKeyPressed
 
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String value = searchField.getText().trim();
         if (value.length()>0) {
             try {
-                client.Client.ctrl.sendMessage(client.Client.ctrl.SEND_SEARCH+value);
+                client.Client.ctrl.sendMessage(client.Client.ctrl.SEND_SEARCH+client.ClientController.SPLIT_TWO+value);
             } catch (IOException ex) {
                 Logger.getLogger(searchPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }//GEN-LAST:event_searchFieldKeyPressed
-
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void handleClickBtnSearch(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleClickBtnSearch
+    }//GEN-LAST:event_handleClickBtnSearch
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
