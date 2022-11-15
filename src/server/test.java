@@ -5,7 +5,14 @@
  */
 package server;
 
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlElement;
+import com.gargoylesoftware.htmlunit.html.HtmlImage;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import static java.rmi.server.LogStream.log;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import javax.imageio.ImageIO;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -50,11 +58,19 @@ public class test {
         return "";
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws MalformedURLException, IOException {
 
-//        String url = "https://www.booking.com/searchresults.vi.html?ss=tam%20k%E1%BB%B3";
-//        System.out.println(getHotelsData("tam ky"));
-           float longti = Float.parseFloat("-80");
-           System.out.println(longti);
+       
+
+        String url = "https://t-cf.bstatic.com/xdata/images/hotel/square200/383998588.webp?k=8e586b35ac11ff46617fc90895158b49fad36bafa0cc1fb847f956948494bb6e&o=&s=1";
+
+        final WebClient webClient = new WebClient();
+        HtmlPage page =webClient.getPage(url);
+        HtmlImage img =  (HtmlImage) page.getByXPath("/html/body/img");
+        System.out.println(img);
+        webClient.closeAllWindows();
+        
+        ImageIO i
     }
+
 }

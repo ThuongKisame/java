@@ -3,15 +3,24 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/GUI/ItemHotel.java</file>
             <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/GUI/ItemHotelInCT.java</file>
-            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/GUI/searchPanel.java</file>
             <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/Client.java</file>
             <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/GUI/RecommendItem.java</file>
-            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/ClientController.java</file>
+            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/DTO/Country.java</file>
             <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/GUI/CityPanel.java</file>
             <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/GUI/CountryPanel.java</file>
+            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/DTO/Weather.java</file>
+            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/GUI/ItemHotel.java</file>
+            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/GUI/searchPanel.java</file>
+            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/server/test.java</file>
+            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/GUI/HomePanel.java</file>
+            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/ClientController.java</file>
+            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/GUI/GetImgae.java</file>
+            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/DTO/City.java</file>
+            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/GUI/test.java</file>
             <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/GUI/SearchCountryItemPanel.java</file>
+            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/DTO/Recommend.java</file>
+            <file>file:/C:/Users/TTC/Documents/NetBeansProjects/LTM/src/client/GUI/MainClientFarme.java</file>
         </group>
     </open-files>
 </project-private>

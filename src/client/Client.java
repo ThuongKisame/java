@@ -9,6 +9,7 @@ import client.DTO.City;
 import client.DTO.Country;
 import client.GUI.CityPanel;
 import client.GUI.CountryPanel;
+import client.GUI.HomePanel;
 import client.GUI.MainClientFarme;
 import client.GUI.RoundedPanel;
 import java.awt.Color;
@@ -100,6 +101,8 @@ public class Client {
             
             //Open gui
             Client.farme=new MainClientFarme();
+            
+            Client.farme.repaint();
             Client.farme.setVisible(true);
             
             ClientListener clientlistener = new ClientListener(server);

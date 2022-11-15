@@ -33,13 +33,11 @@ public class MainClientFarme extends javax.swing.JFrame {
 
         this.container.setSize(this.getSize());
         // header container search panel
-        
+
         renderSearch(this);
-        
 
         this.setDefaultCloseOperation(MainClientFarme.EXIT_ON_CLOSE);
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -128,11 +126,18 @@ public class MainClientFarme extends javax.swing.JFrame {
         searchPanel searchWrap = new searchPanel();
         searchWrap.setSize(headerWrap.getSize());
         searchWrap.setLayout(null);
-        searchWrap.searchField.setBounds(0,0,headerWrap.getWidth()-40,headerWrap.getHeight());
-        searchWrap.btnSearch.setBounds(headerWrap.getWidth()-40,0,40,40);
+        searchWrap.searchField.setBounds(0, 0, headerWrap.getWidth() - 40, headerWrap.getHeight());
+        searchWrap.btnSearch.setBounds(headerWrap.getWidth() - 40, 0, 40, 40);
 
         headerWrap.add(searchWrap);
         cpn.container.add(headerWrap);
+
+//        HomePanel home = new HomePanel();
+//        Dimension d = new Dimension(cpn.getWidth() - 200, 40);
+//        home.setBounds(100, 100, cpn.getWidth() - 200, 40);
+//        home.setMinimumSize(d);
+//        cpn.container.add(home);
+
         cpn.repaint();
     }
 }

@@ -42,7 +42,6 @@ public class Country {
         System.out.println(latlng);
         float lati = Float.parseFloat(latlng.split(",")[0].substring(1, latlng.split(",")[0].length()));
         String l=latlng.split(",")[1].substring(0, latlng.split(",")[1].length()-1);
-        System.out.println("43"+l);
         float longti = Float.parseFloat(l);
         if (lati > 0) {
             this.latitude = Math.abs(lati) + "' N";
