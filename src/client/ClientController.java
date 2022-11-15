@@ -9,6 +9,8 @@ import client.DTO.City;
 import server.AES;
 
 import client.DTO.Country;
+import client.DTO.Hotel;
+import client.DTO.Weather;
 import client.GUI.SearchCityItemPanel;
 import client.GUI.SearchCountryItemPanel;
 import client.GUI.TitleFarme;
@@ -57,22 +59,43 @@ public class ClientController {
     private static final String ALPHA_NUMERIC = alpha + alphaUpperCase + digits;
     private static Random generator = new Random();
 
+    public static final int LOGIN = 1;
     public static final int SEND_SEARCH = 2;
     public static final int GET_SEARCH = 3;
 
+    public static final int SEND_RECOMMEND = 4;
+    public static final int GET_RECOMMEND = 5;
+
+    public static final int SEND_CITY_ACRONYM = 6;
+    public static final int GET_CITY_ACRONYM = 7;
+
+    public static final int SEND_WEATHER = 8;
+    public static final int GET_WEATHER = 9;
+
+    public static final int SEND_HOTELS = 10;
+    public static final int GET_HOTELS = 11;
+
+    public static final int SEND_HOTELS_IN_CT = 12;
+    public static final int GET_HOTELS_IN_CT = 13;
+
     public static final String URL_IMG_FLAG = "http://www.geognos.com/api/en/countries/flag/";
     public static final String URL_IMG_MAP = "http://img.geonames.org/img/country/250/";
+    public static final String URL_ICON_WEATHER_HEADER = "https://openweathermap.org/img/wn/";
+    public static final String URL_ICON_WEATHER_TAIL = "@2x.png";
 
-    public static final String SPLIT_TWO = "/==/";
+    public static final String SPLIT_TWO = "/==/";//dùng để gửi thông điệp
     public static final String SPLIT_THREE = "/===/";
     public static final String SPLIT_FOUR = "/====/";
 
-    public static final int LOGIN = 1;
-    public static final int UPDATE = 2;
     private Socket server;
 
     public ClientController(Socket server) {
         this.server = server;
+    }
+
+    public static void getHotelInCountry(String name) throws IOException {
+        String response = SEND_HOTELS_IN_CT + SPLIT_TWO + name;
+        sendMessage(response);
     }
 
     public void run(String sms) throws InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException {
@@ -89,6 +112,26 @@ public class ClientController {
             switch (option) {
                 case GET_SEARCH: {
                     handleGetSearch(res[1].trim());
+                    break;
+                }
+                case GET_RECOMMEND: {
+                    handleGetRecommend(res[1].trim());
+                    break;
+                }
+                case GET_CITY_ACRONYM: {
+                    handleGetAcronym(res[1].trim());
+                    break;
+                }
+                case GET_WEATHER: {
+                    handleGetWeather(res[1]);
+                    break;
+                }
+                case GET_HOTELS: {
+                    handleGetHotels(res[1].trim());
+                    break;
+                }
+                case GET_HOTELS_IN_CT: {
+                    handleGetHotelsInCT(res[1].trim());
                     break;
                 }
                 default: {
@@ -196,6 +239,9 @@ public class ClientController {
             Client.containerResultSearch.removeAll();
 
         }
+        //reset data
+        Client.countrys.removeAll(Client.countrys);
+        Client.citys.removeAll(Client.citys);
 
         Client.containerResultSearch.setBounds(100, 55, Client.farme.getWidth() - 200, 600);
 
@@ -203,22 +249,10 @@ public class ClientController {
         Client.containerResultSearch.setLayout(boxLayout);
         System.out.println(countrys[0]);
         if (!countrys[0].contains("[]")) {
-            List<Country> ctrs = new ArrayList<>();
+
             for (String country : countrys) {
-                JSONArray jsonArr = new JSONArray(country);
-
-                String name = jsonArr.getJSONObject(0).getJSONObject("name").getString("common");
-
-                String cca2 = jsonArr.getJSONObject(0).getString("cca2");
-                String url = URL_IMG_FLAG + cca2 + ".png";
-                String urlMap = URL_IMG_MAP + cca2 + ".png";
-                String currencies = jsonArr.getJSONObject(0).getJSONObject("currencies").toString().split("\":")[0].split("\"")[1];
-                String languages = jsonArr.getJSONObject(0).getJSONObject("languages").toString().split("\":\"")[1].split("\"")[0];
-                int population = jsonArr.getJSONObject(0).getInt("population");
-                String latlng = jsonArr.getJSONObject(0).getJSONArray("latlng").toString();
-
-                Country ctr = new Country(name, url, urlMap, country, currencies, languages, population + "", latlng, "");
-                ctrs.add(ctr);
+                Country ct = convertStringToCountry(country);
+                Client.countrys.add(ct);
             }
 
             Dimension d = new Dimension(1150, 30);
@@ -227,7 +261,7 @@ public class ClientController {
             Client.containerResultSearch.add(title);
             Client.containerResultSearch.add(Box.createRigidArea(new Dimension(1000, 10)));
 
-            ctrs.forEach(e -> {
+            Client.countrys.forEach(e -> {
                 SearchCountryItemPanel item;
                 try {
                     item = new SearchCountryItemPanel(e);
@@ -242,7 +276,6 @@ public class ClientController {
             });
         }
         if (!citys[0].contains("[]")) {
-            List<City> cts = new ArrayList<>();
 
             Dimension d = new Dimension(1150, 30);
 
@@ -258,11 +291,11 @@ public class ClientController {
                 Double lon = jsonObj.getDouble("lon");
 
                 City ct = new City(name, city, flag, lon, lat);
-                cts.add(ct);
+                Client.citys.add(ct);
 
             }
 
-            cts.forEach(e -> {
+            Client.citys.forEach(e -> {
                 System.out.println(e.toString());
                 Dimension dm = new Dimension(1150, 60);
 
@@ -299,8 +332,86 @@ public class ClientController {
         return resizedImg;
     }
 
-    public static void getRecomend(String countryName) {
+    public static void getRecommend(String countryName) throws IOException {
+        String sms = SEND_RECOMMEND + SPLIT_TWO + countryName;
+        sendMessage(sms);
+    }
 
+    private void handleGetRecommend(String result) throws IOException {
+        Client.countryPanel.country.setRecommend(result);
+
+        client.Client.countryPanel.renderRecommed(client.Client.countryPanel);
+        System.out.println("----------------------");
+        if (Client.countryPanel.country.rcmd.size() > 0) {
+            System.out.println("++++++++++");
+            getHotelInCountry(Client.countryPanel.country.rcmd.get(0).getName().split(",")[0]);
+        }
+        client.Client.farme.repaint();
+    }
+
+    private Country convertStringToCountry(String country) {
+        JSONArray jsonArr = new JSONArray(country);
+
+        String name = jsonArr.getJSONObject(0).getJSONObject("name").getString("common");
+
+        String cca2 = jsonArr.getJSONObject(0).getString("cca2");
+        String url = URL_IMG_FLAG + cca2 + ".png";
+        String urlMap = URL_IMG_MAP + cca2 + ".png";
+        String currencies = jsonArr.getJSONObject(0).getJSONObject("currencies").toString().split("\":")[0].split("\"")[1];
+        String languages = jsonArr.getJSONObject(0).getJSONObject("languages").toString().split("\":\"")[1].split("\"")[0];
+        int population = jsonArr.getJSONObject(0).getInt("population");
+        String latlng = jsonArr.getJSONObject(0).getJSONArray("latlng").toString();
+
+        return new Country(name, url, urlMap, country, currencies, languages, population + "", latlng, "");
+    }
+
+    private void handleGetAcronym(String countryString) throws IOException {
+        Client.cityPanel.city.country = convertStringToCountry(countryString);
+        Client.cityPanel.renderCountry(Client.cityPanel);
+
+    }
+
+    private void handleGetWeather(String re) throws IOException {
+        Client.cityPanel.city.weather = converStringToWeather(re);
+        Client.cityPanel.renderWeather(Client.cityPanel);
+    }
+
+    private Weather converStringToWeather(String weatherString) {
+        JSONObject json = new JSONObject(weatherString);
+        String description = json.getJSONArray("weather").getJSONObject(0).getString("description");
+        String iconUrl = json.getJSONArray("weather").getJSONObject(0).getString("icon");
+        Double temp = json.getJSONObject("main").getDouble("temp");
+        Double humidity = json.getJSONObject("main").getDouble("humidity");
+        Double windSpeed = json.getJSONObject("wind").getDouble("speed");
+
+        return new Weather(description, iconUrl, temp, humidity, windSpeed);
+    }
+
+    private void handleGetHotels(String arrString) {
+        convertStringToHotel(arrString, Client.cityPanel.city.hotels);
+        Client.cityPanel.renderHotel(Client.cityPanel);
+    }
+
+    private void convertStringToHotel(String arrString, List<Hotel> hotels) {
+        JSONArray arr = new JSONArray(arrString);
+        for (int i = 0; i < arr.length(); i++) {
+            JSONObject json = arr.getJSONObject(i);
+
+            String hotelName = json.getString("hotelName");
+            String price = json.getString("price");
+            String rated = json.getString("rated");
+            String location = json.getString("location");
+            String imgage = json.getString("imgage");
+
+            Hotel hotel = new Hotel(rated, imgage, price, location, hotelName);
+
+            hotels.add(hotel);
+        }
+    }
+
+    private void handleGetHotelsInCT(String arrString) {
+        convertStringToHotel(arrString, Client.countryPanel.country.hotels);
+        Client.countryPanel.renderHotels(Client.countryPanel);
     }
 
 }

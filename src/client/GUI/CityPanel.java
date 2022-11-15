@@ -5,8 +5,17 @@
  */
 package client.GUI;
 
+import client.Client;
+import client.ClientController;
 import client.DTO.City;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import javax.imageio.ImageIO;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -17,15 +26,38 @@ public class CityPanel extends javax.swing.JPanel {
     /**
      * Creates new form CityPanel
      */
-    private City city;
-    
-    public CityPanel(City city, Dimension dms) {
-        this.city=city;
+    public City city;
+    public Dimension dmsItemHotel=new Dimension(251,249);
+
+    public CityPanel(City city, Dimension dms) throws IOException {
+        this.city = city;
         initComponents();
+        //get data country of city
+        if (city.country == null) {
+            getCountryData(this.city);
+        } else {
+            renderCountry(this);
+        }
+        
+        this.cityName.setText(this.city.getName());
+
+        if (city.weather == null) {
+            getWeatherData(this.city.getLatitude(), this.city.getLongtitude());
+        } else {
+            renderWeather(this);
+        }
+        
+        if (this.city.hotels.size() ==0) {
+            String cityName=this.city.getName();
+            if(cityName.contains("City")){
+                cityName=cityName.replace("City", "");
+            }
+            getHotelsData(cityName);
+        } else {
+            renderWeather(this);
+        }
+
 //        this.jPanel1.setBounds(0, 0,(int) dms.getWidth(),(int) dms.getHeight());
-        
-        
-        
         this.repaint();
     }
 
@@ -38,21 +70,342 @@ public class CityPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        population = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        location = new javax.swing.JLabel();
+        img = new javax.swing.JLabel();
+        name = new javax.swing.JLabel();
+        description = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        text = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        cityName = new javax.swing.JLabel();
+        iconWeather = new javax.swing.JLabel();
+        languages = new javax.swing.JLabel();
+        currencies = new javax.swing.JLabel();
+        currencies2 = new javax.swing.JLabel();
+        humidity = new javax.swing.JLabel();
+        temp = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        ctn = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        ctnItemHotel = new javax.swing.JPanel();
+
+        setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         setForeground(new java.awt.Color(51, 255, 51));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/img/icons8_previous_32.png"))); // NOI18N
+        jLabel1.setText("Quay lại");
+        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                handleClick(evt);
+            }
+        });
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        population.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        population.setText("\"\"");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText(" Tọa độ:");
+
+        location.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        location.setText("Tọa độ");
+
+        img.setText("abc");
+
+        name.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        name.setText("Country name");
+
+        description.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        description.setText("mô tả");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setText(" Ngôn ngữ :");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setText(" Đơn vị tiền tệ :");
+
+        text.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        text.setText(" Độ ẩm :");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setText(" Dân số :");
+
+        cityName.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        cityName.setText("City name");
+
+        iconWeather.setText("iconWeather");
+        iconWeather.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+
+        languages.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        languages.setText("\"\"");
+
+        currencies.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        currencies.setText("\"\"");
+
+        currencies2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        currencies2.setText(" Nhiệt độ :");
+
+        humidity.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        humidity.setText("87 %");
+
+        temp.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        temp.setText("32 'c");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(img, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(location, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel3)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(languages, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(currencies, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(population, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(2, 2, 2))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(11, 11, 11)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(iconWeather, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(description, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(currencies2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(text, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(humidity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(temp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(cityName, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 77, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cityName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(languages))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(currencies))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(population))
+                        .addGap(9, 9, 9)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(location)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(iconWeather, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(description)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(text)
+                                .addComponent(humidity))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(currencies2)
+                                .addComponent(temp)))))
+                .addContainerGap(39, Short.MAX_VALUE))
+            .addComponent(img, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
+
+        jLabel6.setBackground(new java.awt.Color(204, 204, 204));
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel6.setText("   Những khách sạn nổi bật");
+        jPanel2.add(jLabel6);
+
+        jScrollPane2.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+
+        ctnItemHotel.setLayout(new javax.swing.BoxLayout(ctnItemHotel, javax.swing.BoxLayout.Y_AXIS));
+        jScrollPane2.setViewportView(ctnItemHotel);
+
+        javax.swing.GroupLayout ctnLayout = new javax.swing.GroupLayout(ctn);
+        ctn.setLayout(ctnLayout);
+        ctnLayout.setHorizontalGroup(
+            ctnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2)
+        );
+        ctnLayout.setVerticalGroup(
+            ctnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(ctn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ctn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void handleClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleClick
+
+        Client.farme.container.removeAll();
+        Client.farme.renderSearch(Client.farme);
+
+        Client.farme.container.repaint();
+        Client.farme.validate();
+        Client.farme.repaint();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_handleClick
+
+    private void getCountryData(City city) throws IOException {
+        String resquest = ClientController.SEND_CITY_ACRONYM + ClientController.SPLIT_TWO + city.getFlag();
+        ClientController.sendMessage(resquest);
+    }
+
+    public void renderCountry(CityPanel cpn) throws MalformedURLException, IOException {
+        Image image = null;
+        URL url = new URL(cpn.city.country.getUrl());
+        image = ImageIO.read(url);
+        image = client.ClientController.getScaledImage(image, 300, 200);
+        ImageIcon icon = new ImageIcon(image);
+        cpn.img.setIcon(icon);
+
+        cpn.name.setText(cpn.city.country.getName());
+
+        cpn.languages.setText(cpn.city.country.getLanguages());
+
+        cpn.currencies.setText(cpn.city.country.getCurrencies());
+
+        cpn.population.setText(cpn.city.country.getPopulation());
+
+        cpn.location.setText(cpn.city.country.getLatitude() + "  " + cpn.city.country.getLongtitude());
+
+        cpn.repaint();
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel cityName;
+    private javax.swing.JPanel ctn;
+    private javax.swing.JPanel ctnItemHotel;
+    private javax.swing.JLabel currencies;
+    private javax.swing.JLabel currencies2;
+    private javax.swing.JLabel description;
+    private javax.swing.JLabel humidity;
+    private javax.swing.JLabel iconWeather;
+    private javax.swing.JLabel img;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    public javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel languages;
+    private javax.swing.JLabel location;
+    private javax.swing.JLabel name;
+    private javax.swing.JLabel population;
+    private javax.swing.JLabel temp;
+    private javax.swing.JLabel text;
     // End of variables declaration//GEN-END:variables
+
+    private void getWeatherData(Double latitude, Double longtitude) throws IOException {
+        String resquest = ClientController.SEND_WEATHER + ClientController.SPLIT_TWO + latitude + ClientController.SPLIT_THREE + longtitude;
+        ClientController.sendMessage(resquest);
+    }
+
+    public void renderWeather(CityPanel cpn) throws MalformedURLException, IOException {
+        Image image = null;
+        URL url = new URL(cpn.city.weather.getIconUrl());
+        System.out.println(cpn.city.weather.getIconUrl());
+        image = ImageIO.read(url);
+        image = client.ClientController.getScaledImage(image, 63, 65);
+        ImageIcon icon = new ImageIcon(image);
+        cpn.iconWeather.setIcon(icon);
+        
+        cpn.description.setText(cpn.city.weather.getDescription());
+        
+        cpn.humidity.setText(cpn.city.weather.getHumidity()+ " %");
+        
+        double temp=cpn.city.weather.getTemp()/10;
+        int tempInt=(int)temp;
+        cpn.temp.setText(tempInt+" 'C");
+        
+        cpn.repaint();
+        
+    }
+
+    private void getHotelsData(String cityName) throws IOException {
+        String request=ClientController.SEND_HOTELS+ClientController.SPLIT_TWO+cityName;
+        ClientController.sendMessage(request);
+    }
+
+    public void renderHotel(CityPanel cpn) {
+        Dimension dms = new Dimension(cpn.ctn.getWidth()-20, 140);
+        cpn.ctnItemHotel.add(Box.createRigidArea(new Dimension(10, 5)));
+        cpn.city.hotels.forEach(e->{
+            ItemHotelInCT item = new ItemHotelInCT(e);
+            item.setMaximumSize(dms);
+            item.setMinimumSize(dms);
+            cpn.ctnItemHotel.add(item);
+            cpn.ctnItemHotel.add(Box.createRigidArea(new Dimension(10, 5)));
+        });
+        cpn.ctnItemHotel.repaint();
+        cpn.repaint();
+    }
+
 }

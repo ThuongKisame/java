@@ -12,6 +12,8 @@ import java.awt.Image;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -113,16 +115,22 @@ public class SearchCityItemPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void handleClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleClick
-        System.out.println("click : "+city.toString());
-        client.Client.cityPanel =new CityPanel(this.city,client.Client.dms);
-        client.Client.cityPanel.setBounds(100, 55, Client.farme.getWidth() - 200, 600);
-        
-        Client.farme.container.removeAll();
-        Client.farme.container.add(Client.cityPanel);
-        
-        Client.farme.repaint();
-        
-        // TODO add your handling code here:
+        try {
+            System.out.println("click : "+city.toString());
+            client.Client.cityPanel =new CityPanel(this.city,client.Client.dms);
+            client.Client.cityPanel.setBounds(100, 55, Client.farme.getWidth() - 200, 600);
+            
+            Client.farme.container.removeAll();
+            Client.farme.container.add(Client.cityPanel);
+            
+            Client.farme.container.repaint();
+            Client.farme.validate();
+            Client.farme.repaint();
+            
+            // TODO add your handling code here:
+        } catch (IOException ex) {
+            Logger.getLogger(SearchCityItemPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_handleClick
 
 

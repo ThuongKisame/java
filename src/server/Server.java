@@ -37,7 +37,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import server.DTO.Dictionary;
 import org.jsoup.Jsoup;
-
+import server.DTO.Acronym;
 
 /**
  *
@@ -49,17 +49,33 @@ public class Server {
     public static ServerSocket server;
     public static PublicKey publicKey;
     public static PrivateKey privateKey;
-   
-    public static List<Dictionary> listDictionary=new ArrayList<>();
 
-    public static String URL_DICTIONARY="https://dichthuatmientrung.com.vn/ten-cac-quoc-gia-va-quoc-tich-bang-tieng-anh/";
-    public static String DICTIONARY_SELECTOR="table tr:not(:first-child) td:first-child";
-    public static String DICTIONARY_SELECTOR_ENGLISH="span:first-child";
-    public static String DICTIONARY_SELECTOR_VIETNAMESE="span:last-child";
-
- 
-
+    public static List<Dictionary> listDictionary = new ArrayList<>();
+    public static List<Acronym> listAcronyms = new ArrayList<>();
     
+    public static String URL_DICTIONARY = "https://dichthuatmientrung.com.vn/ten-cac-quoc-gia-va-quoc-tich-bang-tieng-anh/";
+    public static String DICTIONARY_SELECTOR = "table tr:not(:first-child) td:first-child";
+    public static String DICTIONARY_SELECTOR_ENGLISH = "span:first-child";
+    public static String DICTIONARY_SELECTOR_VIETNAMESE = "span:last-child";
+
+    public static String URL_ACRONYM = "https://bankervn.com/ten-quoc-gia-tieng-anh/";
+    public static String ACRONYM_SELECTOR = "table tr:not(:first-child)";
+    //agoda
+//    public static String HOTELS_SELECTOR = ".Gridstyled__GridStyled-sc-dfh2k0-0.kEJDDi.PropertyCard__Container";
+//    public static String HOTELS_IMG_SELECTOR = ".HeroImage.HeroImage--s\"";
+//    public static String HOTELS_NAME_SELECTOR=".PropertyCard__HotelName";
+//    public static String HOTELS_ADDRESS_SELECTOR=".Address__Text";
+//    public static String HOTELS_RATED_SELECTOR = ".Typographystyled__TypographyStyled-sc-j18mtu-0.Hkrzy.kite-js-Typography ";
+//    public static String HOTELS_PRICE_SELECTOR = ".PropertyCardPrice__Value";
+    //booking.com
+    public static final String URL_HOTELS="https://www.booking.com/searchresults.vi.html?ss=";
+    public static final String HOTEL_SELECTOR_ITEM=".a826ba81c4.fe821aea6c.fa2f36ad22.afd256fc79.d08f526e0d.ed11e24d01.ef9845d4b3.da89aeb942";
+    
+    
+    
+            
+    public static int ACRONYM_SELECTOR_ENGLISH = 1;
+    public static int ACRONYM_SELECTOR_ACRONYM_NAME = 2;
 
     public static void sendMessage(String sms, User user) throws IOException {
         System.out.println(sms);
@@ -71,17 +87,31 @@ public class Server {
 
     private static void getDictionary() throws IOException {
         Document doc = Jsoup.connect(Server.URL_DICTIONARY).get();
-        List<Element> result=doc.select(Server.DICTIONARY_SELECTOR); 
-        result.forEach(e->{
-            String english =e.select(Server.DICTIONARY_SELECTOR_ENGLISH).text();
-            String vietNamese= e.select(Server.DICTIONARY_SELECTOR_VIETNAMESE).text();
-            if(vietNamese.contains("nước")){
-                vietNamese=vietNamese.replaceAll("nước", "").trim();
+        List<Element> result = doc.select(Server.DICTIONARY_SELECTOR);
+        result.forEach(e -> {
+            String english = e.select(Server.DICTIONARY_SELECTOR_ENGLISH).text();
+            String vietNamese = e.select(Server.DICTIONARY_SELECTOR_VIETNAMESE).text();
+            if (vietNamese.contains("nước")) {
+                vietNamese = vietNamese.replaceAll("nước", "").trim();
             }
-            Dictionary d=new Dictionary( vietNamese, vietNamese.toUpperCase(),english,english.toUpperCase());
+            Dictionary d = new Dictionary(vietNamese, vietNamese.toUpperCase(), english, english.toUpperCase());
             Server.listDictionary.add(d);
         });
-     
+
+    }
+
+    private static void getAcronym() throws IOException {
+        Document doc = Jsoup.connect(Server.URL_ACRONYM).get();
+        List<Element> result = doc.select(Server.ACRONYM_SELECTOR);
+        result.forEach(e -> {
+            List<Element> item = e.select("td");
+            String english = item.get(ACRONYM_SELECTOR_ENGLISH).text();
+            String acronym = item.get(ACRONYM_SELECTOR_ACRONYM_NAME).text();
+
+            Acronym ac = new Acronym(english, acronym);
+            Server.listAcronyms.add(ac);
+        });
+
     }
 
     public void WritingConnect() {
@@ -92,7 +122,7 @@ public class Server {
                 client = new Socket();
                 client = Server.server.accept();
                 System.out.println("Client :" + client.toString() + " is connected");
-                User user=new User(client);
+                User user = new User(client);
                 users.add(user);
                 ServerListener listener = new ServerListener(user);
                 listener.start();
@@ -115,7 +145,11 @@ public class Server {
             RSA.CreateServerKey();
             //lấy dữ liệu chuyển tên nước từ tiếng việt sang tiếng anh-{Vietnamese=nước Đan Mạch, English=Denmark}
             getDictionary();
+            //lấy dữ liệu chuyển tên viết tắt sang tên tiếng anh
+            getAcronym() ;
+            
             System.out.println(Server.listDictionary);
+            System.out.println(Server.listAcronyms);
             //writing client conect
             server.WritingConnect();
         } catch (IOException ex) {

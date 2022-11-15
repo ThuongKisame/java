@@ -5,14 +5,21 @@
  */
 package client.GUI;
 
+import client.Client;
+import client.ClientController;
 import client.DTO.Country;
+import client.DTO.Recommend;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Panel;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
+import org.json.JSONObject;
 
 /**
  *
@@ -23,36 +30,55 @@ public class CountryPanel extends javax.swing.JPanel {
     /**
      * Creates new form CountryPanel
      */
-    
-    private Country country;
-    public CountryPanel( Country country) 
-    {
-        this.country=country;
+    public static final Dimension dmsn = new Dimension(400, 500);
+    public static Dimension dmsnItemRecommend;
+
+    public Country country;
+
+    public CountryPanel(Country country) {
+        this.country = country;
         initComponents();
-        
+
     }
 
     CountryPanel(Country country, Dimension dms) throws MalformedURLException, IOException {
-        this.country=country;
+        this.country = country;
         initComponents();
-        
+
+        this.setBackground(Color.white);
+
         Image image = null;
         URL url = new URL(this.country.getUrl());
         image = ImageIO.read(url);
         image = client.ClientController.getScaledImage(image, 300, 200);
         ImageIcon icon = new ImageIcon(image);
         this.img.setIcon(icon);
-        
+
         this.name.setText(this.country.getName());
-        
+
         this.languages.setText(this.country.getLanguages());
-        
+
         this.currencies.setText(this.country.getCurrencies());
-        
+
         this.population.setText(this.country.getPopulation());
-        
-        this.location.setText(this.country.getLatitude()+"  "+this.country.getLongtitude());
-        System.out.println("recommend "+this.country.getRecommend());
+
+        this.location.setText(this.country.getLatitude() + "  " + this.country.getLongtitude());
+
+        if (this.country.recommend.length() > 0) {
+            renderRecommed(this);
+        } else {
+            client.ClientController.getRecommend(this.country.getName());
+        }
+
+        if (this.country.hotels.size() > 0) {
+            renderHotels(this);
+        } else {
+            if (this.country.rcmd.size() > 0) {
+                client.ClientController.getHotelInCountry(this.country.rcmd.get(0).getName().split(",")[0]);
+            }
+
+        }
+
         this.validate();
         this.repaint();
     }
@@ -68,6 +94,7 @@ public class CountryPanel extends javax.swing.JPanel {
 
         img = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
         name = new javax.swing.JLabel();
         languages = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -77,20 +104,40 @@ public class CountryPanel extends javax.swing.JPanel {
         population = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         location = new javax.swing.JLabel();
+        ctnRmd = new javax.swing.JPanel();
+        sideBarRecommend = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        ctnItemRmd = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         setPreferredSize(new java.awt.Dimension(11, 600));
 
         img.setText("jLabel1");
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/img/icons8_previous_32.png"))); // NOI18N
+        jLabel6.setText("Quay lại");
+        jLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                handleClick(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 39, Short.MAX_VALUE)
+            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         name.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -120,41 +167,91 @@ public class CountryPanel extends javax.swing.JPanel {
         location.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         location.setText("Tọa độ");
 
+        ctnRmd.setBackground(new java.awt.Color(255, 255, 255));
+
+        sideBarRecommend.setLayout(new javax.swing.BoxLayout(sideBarRecommend, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane2.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+
+        ctnItemRmd.setBackground(new java.awt.Color(255, 255, 255));
+        ctnItemRmd.setLayout(new javax.swing.BoxLayout(ctnItemRmd, javax.swing.BoxLayout.Y_AXIS));
+        jScrollPane2.setViewportView(ctnItemRmd);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2)
+        );
+
+        javax.swing.GroupLayout ctnRmdLayout = new javax.swing.GroupLayout(ctnRmd);
+        ctnRmd.setLayout(ctnRmdLayout);
+        ctnRmdLayout.setHorizontalGroup(
+            ctnRmdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ctnRmdLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(sideBarRecommend, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        ctnRmdLayout.setVerticalGroup(
+            ctnRmdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ctnRmdLayout.createSequentialGroup()
+                .addGroup(ctnRmdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(sideBarRecommend, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel5.setText("  Những địa điểm du lịch nổi bật ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(img, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(img, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(currencies, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(languages, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(population, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(location, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(population, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(location, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(languages, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(currencies, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 1001, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 30, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(ctnRmd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -174,23 +271,105 @@ public class CountryPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(location)))
-                    .addComponent(img, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(341, Short.MAX_VALUE))
+                    .addComponent(img, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ctnRmd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void handleClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleClick
+
+        Client.farme.container.removeAll();
+        Client.farme.renderSearch(Client.farme);
+
+        Client.farme.container.repaint();
+        Client.farme.validate();
+        Client.farme.repaint();
+    }//GEN-LAST:event_handleClick
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JPanel ctnItemRmd;
+    public javax.swing.JPanel ctnRmd;
     private javax.swing.JLabel currencies;
     private javax.swing.JLabel img;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    public javax.swing.JPanel jPanel2;
+    public javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel languages;
     private javax.swing.JLabel location;
     private javax.swing.JLabel name;
     private javax.swing.JLabel population;
+    public javax.swing.JPanel sideBarRecommend;
     // End of variables declaration//GEN-END:variables
+
+    public void renderRecommed(CountryPanel cpn) {
+        cpn.ctnRmd.setBounds(0, (int) (cpn.getHeight() / 2), cpn.getWidth(), (int) (cpn.getHeight() / 2));
+//        cpn.ctnRmd.setBackground(Color.yellow);
+        System.out.println(cpn.country.getRecommend());
+        String res[] = cpn.country.getRecommend().split(ClientController.SPLIT_THREE);
+        if (!res[0].equals("[]")) {
+            //create new sidebar
+            for (String re : res) {
+                JSONObject json = new JSONObject(re);
+                String name = json.getString("ResultText");
+                String url = json.getString("ResultUrl");
+
+                Recommend rcm = new Recommend(name, url, re);
+                cpn.country.rcmd.add(rcm);
+            }
+
+            if (cpn.country.rcmd.size() > 0) {
+                renderSideBarRecommend(cpn);
+            } else {
+                System.out.println("arr recommend is null");
+            }
+
+        }
+
+        cpn.repaint();
+    }
+
+    private void renderSideBarRecommend(CountryPanel cpn) {
+        dmsnItemRecommend = new Dimension(cpn.sideBarRecommend.getWidth() - 10, 50);
+        for (Recommend recommend : cpn.country.rcmd) {
+            RecommendItem item = new RecommendItem(recommend,cpn);
+            //set size
+            item.setMaximumSize(dmsnItemRecommend);
+            cpn.sideBarRecommend.add(Box.createRigidArea(new Dimension(cpn.sideBarRecommend.getWidth(), 5)));
+            cpn.sideBarRecommend.add(item);
+
+        }
+        cpn.ctnRmd.repaint();
+        cpn.sideBarRecommend.repaint();
+        cpn.repaint();
+    }
+
+    public void renderHotels(CountryPanel cpn) {
+        Dimension dms = new Dimension(820, 140);
+        cpn.ctnItemRmd.add(Box.createRigidArea(new Dimension(10, 5)));
+
+        cpn.country.hotels.forEach(e -> {
+            ItemHotelInCT item = new ItemHotelInCT(e);
+            item.setMaximumSize(dms);
+            item.setMinimumSize(dms);
+            cpn.ctnItemRmd.add(item);
+            cpn.ctnItemRmd.add(Box.createRigidArea(new Dimension(10, 5)));
+
+        });
+        cpn.ctnRmd.repaint();
+        cpn.ctnItemRmd.repaint();
+        cpn.repaint();
+
+    }
+
 }

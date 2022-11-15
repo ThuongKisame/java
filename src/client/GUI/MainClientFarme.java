@@ -33,28 +33,13 @@ public class MainClientFarme extends javax.swing.JFrame {
 
         this.container.setSize(this.getSize());
         // header container search panel
-        JPanel headerWrap = new RoundedPanel(10, Color.WHITE);
-        headerWrap.setBounds(100, 10, this.getWidth() - 200, 40);
-        headerWrap.setLayout(null);
-        //search panel
-        searchPanel searchWrap = new searchPanel();
-        searchWrap.setSize(headerWrap.getSize());
-        searchWrap.setLayout(null);
-        searchWrap.searchField.setBounds(0,0,headerWrap.getWidth()-40,headerWrap.getHeight());
-        searchWrap.btnSearch.setBounds(headerWrap.getWidth()-40,0,40,40);
         
-//        JPanel containerResultSearch=new RoundedPanel(10, Color.WHITE);
-//        containerResultSearch.setBounds(100, 55, this.getWidth() - 200, 40);
-//        containerResultSearch.setLayout(null);
+        renderSearch(this);
         
-//        this.container.add(containerResultSearch);
-
-        headerWrap.add(searchWrap);
-        this.container.add(headerWrap);
-        this.repaint();
 
         this.setDefaultCloseOperation(MainClientFarme.EXIT_ON_CLOSE);
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -134,4 +119,20 @@ public class MainClientFarme extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JPanel container;
     // End of variables declaration//GEN-END:variables
+
+    public void renderSearch(MainClientFarme cpn) {
+        JPanel headerWrap = new RoundedPanel(10, Color.WHITE);
+        headerWrap.setBounds(100, 10, this.getWidth() - 200, 40);
+        headerWrap.setLayout(null);
+        //search panel
+        searchPanel searchWrap = new searchPanel();
+        searchWrap.setSize(headerWrap.getSize());
+        searchWrap.setLayout(null);
+        searchWrap.searchField.setBounds(0,0,headerWrap.getWidth()-40,headerWrap.getHeight());
+        searchWrap.btnSearch.setBounds(headerWrap.getWidth()-40,0,40,40);
+
+        headerWrap.add(searchWrap);
+        cpn.container.add(headerWrap);
+        cpn.repaint();
+    }
 }

@@ -5,6 +5,10 @@
  */
 package client.DTO;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author TTC
@@ -23,6 +27,9 @@ public class Country {
     private String longtitude;
 
     public String recommend ;
+    
+    public List<Recommend> rcmd=new ArrayList<>();
+    public List<Hotel> hotels=new ArrayList<>();
 
     public Country(String name, String url, String urlMap, String data, String currencies, String languages, String population, String latlng, String recommend) {
         this.name = name;
@@ -32,17 +39,20 @@ public class Country {
         this.currencies = currencies;
         this.languages = languages;
         this.population = population;
+        System.out.println(latlng);
         float lati = Float.parseFloat(latlng.split(",")[0].substring(1, latlng.split(",")[0].length()));
-        float longti = Float.parseFloat(latlng.split(",")[1].substring(0, latlng.split(",")[0].length()-1));
+        String l=latlng.split(",")[1].substring(0, latlng.split(",")[1].length()-1);
+        System.out.println("43"+l);
+        float longti = Float.parseFloat(l);
         if (lati > 0) {
-            this.latitude = lati + "' N";
+            this.latitude = Math.abs(lati) + "' N";
         } else {
-            this.latitude = lati + "' S";
+            this.latitude = Math.abs(lati) + "' S";
         }
         if (longti > 0) {
-            this.longtitude = longti + "' E";
+            this.longtitude = Math.abs(longti) + "' E";
         } else {
-            this.longtitude = longti + "' U";
+            this.longtitude = Math.abs(longti) + "' U";
         }
         this.recommend=recommend;
     }

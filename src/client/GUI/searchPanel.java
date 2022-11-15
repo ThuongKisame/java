@@ -41,6 +41,7 @@ public class searchPanel extends javax.swing.JPanel {
         setLayout(null);
 
         btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/img/icons8_search_16.png"))); // NOI18N
+        btnSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSearch.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 handleClickBtnSearch(evt);

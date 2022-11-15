@@ -5,6 +5,7 @@
  */
 package client;
 
+import client.DTO.City;
 import client.DTO.Country;
 import client.GUI.CityPanel;
 import client.GUI.CountryPanel;
@@ -22,6 +23,8 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,6 +47,11 @@ public class Client {
     public static CityPanel cityPanel;
     public static CountryPanel countryPanel;
     
+    //arraylist country and country active //đánh dấu country đc chọn khi click vào
+    public static List<Country> countrys=new ArrayList<>();
+    public static Country countryActive=null;
+    //list city and city active
+    public static List<City> citys=new ArrayList<>();
     
     public static ClientController ctrl;
     public static boolean STATE_SEARCH_PANEL=false;

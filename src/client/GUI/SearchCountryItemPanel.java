@@ -99,6 +99,7 @@ public class SearchCountryItemPanel extends javax.swing.JPanel {
     private void handleClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleClick
         System.out.println(this.country.toString());
         try {
+            Client.countryActive=this.country;
             client.Client.countryPanel =new CountryPanel(this.country,client.Client.dms);
         } catch (IOException ex) {
             Logger.getLogger(SearchCountryItemPanel.class.getName()).log(Level.SEVERE, null, ex);
